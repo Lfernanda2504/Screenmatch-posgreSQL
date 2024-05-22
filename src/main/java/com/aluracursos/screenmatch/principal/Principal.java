@@ -31,6 +31,9 @@ public class Principal {
                     1 - Buscar series 
                     2 - Buscar episodios
                     3 - Mostrar series buscadas
+                    4 - Buscar series por titulo
+                    5- Top 5 Mejores series
+                    6- Buscar serie por categoria
                                   
                     0 - Salir
                     """;
@@ -48,6 +51,15 @@ public class Principal {
                 case 3:
                     mostrarSeriesBuscadas();
                     break;
+                case 4:
+                    buscarSeriesPorTitulo();
+                    break;
+                case 5:
+                    buscarTop5Series();
+                    break;
+                case 6:
+                    buscarSeriePorCategoria();
+                    break;
                 case 0:
                     System.out.println("Cerrando la aplicación...");
                     break;
@@ -57,6 +69,8 @@ public class Principal {
         }
 
     }
+
+
 
     private DatosSerie getDatosSerie() {
         System.out.println("Escribe el nombre de la serie que deseas buscar");
@@ -112,5 +126,26 @@ public class Principal {
         series.stream()
                 .sorted(Comparator.comparing(Serie::getGenero))
                 .forEach(System.out::println);
+    }
+
+    private void buscarSeriesPorTitulo(){
+        System.out.println("Ingresa el nombre de la serie a buscar: ");
+        var tituloserie = teclado.nextLine();
+        Optional<Serie> serieBuscada = repositorio.findByTituloContainsIgnoreCase(tituloserie);
+
+        if (serieBuscada.isPresent()){
+            System.out.println("La serie buscada es: " +serieBuscada.get());
+        }else {
+            System.out.println("Serie no encontrada");
+        }
+
+    }
+
+    private void buscarTop5Series(){
+        List <Serie> topSeries = repositorio.findTop5ByOrderByEvaluacionDesc();
+        System.out.println(topSeries);
+        topSeries.forEach(s -> System.out.println("Serie: " +s.getTitulo() + " Evaluación: " +s.getEvaluacion()));
+    }
+    private void buscarSeriePorCategoria() {
     }
 }
