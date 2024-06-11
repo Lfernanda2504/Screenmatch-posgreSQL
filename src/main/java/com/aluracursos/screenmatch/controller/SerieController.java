@@ -1,6 +1,7 @@
 package com.aluracursos.screenmatch.controller;
 
 
+import com.aluracursos.screenmatch.dto.EpisodioDTO;
 import com.aluracursos.screenmatch.dto.SerieDTO;
 import com.aluracursos.screenmatch.model.Serie;
 import com.aluracursos.screenmatch.repository.SerieRepository;
@@ -19,29 +20,41 @@ import java.util.stream.Collectors;
 @RequestMapping("/series")
 public class SerieController {
 
-@Autowired
-private SerieService servicio;
+    @Autowired
+    private SerieService servicio;
 
     //para obtener datos de una ruta en especifico
     //endpoint
     @GetMapping()
-    public List<SerieDTO> obtenerSeries(){
+    public List<SerieDTO> obtenerSeries() {
         //return series
         return servicio.obtenerSeries();
     }
+
     @GetMapping("/top5")
-    public List<SerieDTO> obtenerTop5(){
+    public List<SerieDTO> obtenerTop5() {
         return servicio.obtenerTop5();
     }
+
     @GetMapping("/lanzamientos")
-    public List<SerieDTO>obtenerLanzamientosMasRecientes(){
+    public List<SerieDTO> obtenerLanzamientosMasRecientes() {
         return servicio.obtenerLanzamientosMasRecientes();
     }
+
     //parametro dinamico
     @GetMapping("/{id}")
     //@PathVariable indica que viene en header de la url
-    public SerieDTO obtenerPorId(@PathVariable Long id)
-    {
+    public SerieDTO obtenerPorId(@PathVariable Long id) {
         return servicio.obtenerPorId(id);
     }
+
+    @GetMapping("/{id}/temporadas/todas")
+    public List<EpisodioDTO> obtenerTodasLasTemporadas(@PathVariable Long id) {
+        return servicio.obtenerTodasLasTemporadas(id);
+    }
+    @GetMapping("/{id}/temporadas/{numeroTemporada}")
+    public  List<EpisodioDTO> obtenerTemporadasPorNumero(@PathVariable Long id, @PathVariable Long numeroTemporada){
+        return servicio.obtenerTemporadasPorNumero(id, numeroTemporada);
+        }
+
 }
